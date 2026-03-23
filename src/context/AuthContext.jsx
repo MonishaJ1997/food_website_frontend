@@ -3,45 +3,51 @@ import { createContext, useState, useEffect } from "react";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-
   const [user, setUser] = useState(null);
 
-  // ✅ Load from localStorage
+  // Load logged in user from localStorage
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) setUser(JSON.parse(savedUser));
+    const saved = localStorage.getItem("user");
+    if (saved) setUser(JSON.parse(saved));
   }, []);
 
-  // ✅ REGISTER
+  // Register a new user
   const register = (form) => {
     localStorage.setItem("registeredUser", JSON.stringify(form));
+    return { success: true };
   };
 
-  // ✅ LOGIN (STRICT CHECK)
-  const login = (email, password) => {
-    const saved = JSON.parse(localStorage.getItem("registeredUser"));
+  // Login user
+  // LOGIN
+const login = (email, password) => {
+  const saved = JSON.parse(localStorage.getItem("registeredUser"));
 
-    if (!saved) {
-      return "no_user";   // ❌ no register
-    }
+  if (!saved) {
+    return { success: false, reason: "not_registered" }; // ❌ no user
+  }
 
-    if (saved.email !== email || saved.password !== password) {
-      return "invalid";  // ❌ wrong login
-    }
+  if (saved.email !== email) {
+    return { success: false, reason: "not_registered" }; // ❌ email not found
+  }
 
-    setUser(saved);
-    localStorage.setItem("user", JSON.stringify(saved));
-    return "success";
-  };
+  if (saved.password !== password) {
+    return { success: false, reason: "wrong_password" }; // ❌ password wrong
+  }
 
-  // ✅ LOGOUT
+  // ✅ successful login
+  setUser(saved);
+  localStorage.setItem("user", JSON.stringify(saved));
+  return { success: true };
+};
+
+  // Logout user
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
   };
 
   return (
-    <AuthContext.Provider value={{ user, register, login, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

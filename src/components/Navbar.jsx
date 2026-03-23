@@ -11,7 +11,7 @@ export default function Navbar() {
   const [showAuth, setShowAuth] = useState(false);
 
   const { cartCount } = useContext(CartContext);
-  const { user } = useContext(AuthContext);
+ const { user, login, register } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -133,8 +133,13 @@ export default function Navbar() {
 
       {/* AUTH MODAL */}
       {showAuth && (
-        <AuthModal close={() => setShowAuth(false)} />
-      )}
+  <AuthModal
+    close={() => setShowAuth(false)}
+    onLogin={login}      // pass login function
+    onRegister={register} // pass register function
+    defaultMode="login"
+  />
+)}
     </>
   );
 }

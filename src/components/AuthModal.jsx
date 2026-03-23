@@ -1,49 +1,49 @@
-import { useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useState } from "react";
 import "./Auth.css";
 
-export default function AuthModal({ close, defaultMode = "login" }) {
-  const { register, login } = useContext(AuthContext);
-
-  // ✅ CONTROL MODE FROM OUTSIDE
+export default function AuthModal({ close, defaultMode = "login", onLogin, onRegister }) {
   const [isLogin, setIsLogin] = useState(defaultMode === "login");
-
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    phone: ""   // ✅ PHONE ADDED
-  });
+  const [form, setForm] = useState({ name: "", email: "", password: "", phone: "" });
+  const [message, setMessage] = useState("");
 
   const handleSubmit = () => {
+    setMessage("");
+
     if (!form.email || !form.password) {
-      return alert("Fill all fields");
+      setMessage("Fill all required fields");
+      return;
     }
 
     if (!/\S+@\S+\.\S+/.test(form.email)) {
-      return alert("Invalid email");
+      setMessage("Invalid email");
+      return;
     }
 
     if (isLogin) {
-      login(form.email, form.password);
-      close();
+      const res = onLogin(form.email, form.password);
+
+      if (res.success) {
+        close();
+      } else if (res.reason === "not_registered") {
+        setMessage("User not registered. Please register!");
+        setIsLogin(false); // switch to register
+      } else if (res.reason === "wrong_password") {
+        setMessage("Wrong password!");
+      }
     } else {
-      // ✅ NAME VALIDATION
       if (!form.name || !/^[A-Za-z\s]+$/.test(form.name)) {
-        return alert("Name should contain only letters");
+        setMessage("Name should contain only letters");
+        return;
+      }
+      if (!form.phone || !/^[0-9]{10}$/.test(form.phone)) {
+        setMessage("Enter valid 10-digit phone number");
+        return;
       }
 
-      // ✅ PHONE VALIDATION
-      if (!/^[0-9]{10}$/.test(form.phone)) {
-        return alert("Enter valid 10 digit phone number");
-      }
-
-      register(form);
-
-      // ✅ After register → switch to login
+      onRegister(form);
+      setMessage("Registered successfully! Please login");
       setIsLogin(true);
-
-      alert("Registered successfully! Please login");
+      setForm({ name: "", email: form.email, password: "", phone: "" });
     }
   };
 
@@ -51,56 +51,39 @@ export default function AuthModal({ close, defaultMode = "login" }) {
     <div className="auth-overlay">
       <div className="auth-box">
         <h2>{isLogin ? "Login" : "Register"}</h2>
+        {message && <p className="error-msg">{message}</p>}
 
-        {/* ✅ REGISTER FIELDS */}
         {!isLogin && (
           <>
             <input
               placeholder="Name"
               value={form.name}
-              onChange={(e) =>
-                setForm({ ...form, name: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
             />
-
-            {/* ✅ PHONE INPUT */}
             <input
               placeholder="Phone Number"
               value={form.phone}
-              onChange={(e) =>
-                setForm({ ...form, phone: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
             />
           </>
         )}
 
-        {/* EMAIL */}
         <input
           placeholder="Email"
           value={form.email}
-          onChange={(e) =>
-            setForm({ ...form, email: e.target.value })
-          }
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
-
-        {/* PASSWORD */}
         <input
           type="password"
           placeholder="Password"
           value={form.password}
-          onChange={(e) =>
-            setForm({ ...form, password: e.target.value })
-          }
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
 
-        <button onClick={handleSubmit}>
-          {isLogin ? "Login" : "Register"}
-        </button>
+        <button onClick={handleSubmit}>{isLogin ? "Login" : "Register"}</button>
 
         <p onClick={() => setIsLogin(!isLogin)}>
-          {isLogin
-            ? "New user? Register"
-            : "Already have account? Login"}
+          {isLogin ? "New user? Register" : "Already have account? Login"}
         </p>
 
         <span className="close" onClick={close}>✖</span>

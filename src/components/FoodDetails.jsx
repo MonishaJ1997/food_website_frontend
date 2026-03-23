@@ -14,8 +14,8 @@ export default function FoodDetails() {
   const navigate = useNavigate();
 
   const { addToCart } = useContext(CartContext);
-  const { user } = useContext(AuthContext); // ✅ CHECK LOGIN
-
+   // ✅ CHECK LOGIN
+ const { user, login, register } = useContext(AuthContext);
   const [showAuth, setShowAuth] = useState(false); // ✅ POPUP CONTROL
 
   useEffect(() => {
@@ -91,12 +91,16 @@ export default function FoodDetails() {
       </div>
 
       {/* ✅ LOGIN POPUP */}
+      
       {showAuth && (
         <AuthModal 
-  close={() => setShowAuth(false)} 
-  defaultMode="login"   // 🔥 OPEN REGISTER DIRECTLY
-/>
+          close={() => setShowAuth(false)} 
+          defaultMode="login"
+          onLogin={login}       // 🔥 PASS LOGIN FUNCTION
+          onRegister={register} // 🔥 PASS REGISTER FUNCTION
+        />
       )}
+
       <Footer/>
     </>
    

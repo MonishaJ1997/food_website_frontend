@@ -45,7 +45,8 @@ export default function Profile() {
           <button
   className="logout-btn"
   onClick={() => {
-    logout();          // clear user
+    logout();
+    localStorage.removeItem("lastOrder");          // clear user
     navigate("/");     // go to home
   }}
 >
