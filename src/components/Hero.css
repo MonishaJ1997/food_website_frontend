@@ -1,0 +1,153 @@
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px 80px;
+  background: var(--light);
+  border-radius: 25px;
+  margin: 40px;
+  gap: 40px;
+}
+
+/* LEFT SIDE */
+.hero-left {
+  flex: 1;
+}
+
+.tag {
+  background: #ffe3c2;
+  color: #ff7a00;
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.hero-left h1 {
+  font-size: 48px;
+  font-weight: 700;
+  margin: 20px 0;
+  line-height: 1.2;
+  color: #222;
+}
+
+.desc {
+  color: #666;
+  font-size: 15px;
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+/* BUTTONS */
+.buttons {
+  margin-top: 25px;
+  display: flex;
+  align-items: center;
+}
+
+.order {
+  background: var(--primary);
+  color: white;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 30px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.order:hover {
+  background: #e96b00 ;
+}
+
+.explore {
+  margin-left: 15px;
+  padding: 12px 28px;
+  border-radius: 30px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.explore:hover {
+  background: #fff2e6;
+}
+
+/* RIGHT SIDE IMAGE */
+.hero-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-right img {
+  width: 320px;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+
+@media (max-width: 1024px) {
+  .hero {
+    flex-direction: column;
+    padding: 40px 30px;
+    margin: 20px;
+    gap: 30px;
+    text-align: center;
+  }
+
+  .hero-left, .hero-right {
+    flex: unset;
+    width: 100%;
+  }
+
+  .hero-left h1 {
+    font-size: 36px;
+  }
+
+  .desc {
+    max-width: 100%;
+    font-size: 14px;
+  }
+
+  .buttons {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .hero-right img {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding: 30px 20px;
+    margin: 10px;
+    gap: 20px;
+  }
+
+  .hero-left h1 {
+    font-size: 28px;
+  }
+
+  .desc {
+    font-size: 13px;
+  }
+
+  .order, .explore {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .hero-right img {
+    width: 200px;
+    height: 200px;
+  }
+}

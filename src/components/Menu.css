@@ -1,0 +1,267 @@
+ /* 🌿 ROOT COLORS */
+:root {
+  --primary: #ff7a00;
+  --secondary: #fff3e6;
+  --bg: #fafafa;
+  --white: #ffffff;
+  --text: #222;
+  --light-text: #777;
+  --border: #eee;
+}
+
+/* 🔥 MAIN LAYOUT */
+.main-container {
+  display: flex;
+  background: var(--bg);
+  min-height: 100vh;
+  gap: 20px;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 260px;
+  background: var(--white);
+  padding: 20px;
+  border-right: 1px solid var(--border);
+  box-shadow: 2px 0 12px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+/* CATEGORY ITEM */
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* icon + name horizontal */
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sidebar-item .left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ICON STYLE */
+.iconsed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  background: var(--secondary);
+  padding: 6px;
+  border-radius: 8px;
+  color: var(--primary);
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* ACTIVE CATEGORY */
+.sidebar-item.active {
+  background: var(--primary);
+  color: white;
+}
+
+.sidebar-item.active .iconsed {
+  background: rgba(255,255,255,0.2);
+  color: white;
+}
+
+/* HOVER */
+.sidebar-item:hover {
+  background: var(--secondary);
+  transform: translateX(4px);
+}
+
+/* ARROW */
+.arrow {
+  font-size: 12px;
+  margin-left: auto;
+  transition: transform 0.3s ease;
+}
+
+.arrow.rotate {
+  transform: rotate(180deg);
+}
+
+/* SUBCATEGORY */
+.subcategory-list {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  margin-left: 10px;
+}
+
+.subcategory-list.open {
+  max-height: 500px;
+  margin-bottom: 10px;
+}
+
+.sub-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-top: 6px;
+  cursor: pointer;
+  color: var(--light-text);
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.sub-item:hover {
+  background: var(--secondary);
+  color: var(--primary);
+  transform: translateX(4px);
+}
+
+.sub-active {
+  background: var(--secondary);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* ================= RIGHT CONTENT ================= */
+.content {
+  flex: 1;
+  padding: 30px;
+}
+
+.content h2 {
+  margin-bottom: 20px;
+  color: var(--text);
+  font-size: 22px;
+}
+
+/* FOOD GRID */
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* FOOD CARD */
+.food-card {
+  background: var(--white);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.food-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.food-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.food-info {
+  padding: 12px;
+}
+
+.food-info h4 {
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.food-info p {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.food-info button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  background: var(--primary);
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.food-info button:hover {
+  background: var(--secondary);
+}
+
+/* ================= MEDIA QUERIES ================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+  }
+
+  .food-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+
+  .iconsed {
+    min-width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: column; /* stay vertical */
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 10px;
+  }
+
+  .sidebar-item {
+    padding: 10px 12px;
+    font-size: 14px;
+    gap: 10px;
+  }
+
+  .arrow {
+    display: none; /* hide arrow on mobile */
+  }
+
+  .food-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
+
+/* Extra small mobile */
+@media (max-width: 480px) {
+  .food-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-item {
+    padding: 8px;
+    font-size: 13px;
+    gap: 8px;
+  }
+
+  .iconsed {
+    min-width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+}

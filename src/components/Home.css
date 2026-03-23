@@ -1,0 +1,151 @@
+/* === ROOT VARIABLES === */
+:root {
+  --primary: #ff7a00;
+  --secondary: #ff9f43;
+  --light: #fff5eb;
+  --dark: #333;
+  --gray: #777;
+  --card-bg: #fff; /* added for why-card */
+  --text: #222;
+}
+
+/* ==================== FOOD LIST ==================== */
+.food-list {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+/* ==================== WHY CHOOSE US ==================== */
+.why {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--light);
+  margin-top: 30px;
+}
+
+.why h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 40px;
+  letter-spacing: 1px;
+}
+
+/* CONTAINER */
+.why-container {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+/* CARD */
+.why-card {
+  width: 260px;
+  background: var(--card-bg);
+  padding: 25px 20px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 
+    0 4px 10px rgba(0,0,0,0.05),
+    0 10px 25px rgba(0,0,0,0.08);
+  transition: 0.3s ease;
+}
+
+.why-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 10px 20px rgba(0,0,0,0.08),
+    0 20px 40px rgba(0,0,0,0.12);
+}
+
+.icons {
+  font-size: 28px;
+  color: var(--primary);
+  margin-bottom: 15px;
+}
+
+.why-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.why-card p {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.5;
+}
+
+/* ==================== MEDIA QUERIES ==================== */
+
+/* Tablet (<=1024px) */
+@media (max-width: 1024px) {
+  .food-list {
+    gap: 20px;
+  }
+
+  .why h2 {
+    font-size: 24px;
+  }
+
+  .why-card {
+    width: 220px;
+    padding: 20px 15px;
+  }
+
+  .why-card h3 {
+    font-size: 15px;
+  }
+
+  .why-card p {
+    font-size: 12px;
+  }
+
+  .icons {
+    font-size: 24px;
+  }
+}
+
+/* Mobile (<=600px) */
+@media (max-width: 600px) {
+  .food-list {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .why h2 {
+    font-size: 22px;
+    margin-bottom: 30px;
+  }
+
+  .why-container {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .why-card {
+    width: 90%;
+    padding: 18px 15px;
+  }
+
+  .why-card h3 {
+    font-size: 14px;
+  }
+
+  .why-card p {
+    font-size: 12px;
+  }
+
+  .icons {
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+}

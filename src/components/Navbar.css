@@ -1,0 +1,216 @@
+:root {
+  --primary: #ff7a00;
+  --secondary: #ff9f43;
+  --light: #fff5eb;
+  --dark: #333;
+  --gray: #777;
+  --text: #222;
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  position: relative;
+  background: white;
+}
+
+/* LOGO */
+.logo {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* NAV LINKS */
+.nav-links {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links li {
+  cursor: pointer;
+}
+
+/* LINKS */
+.nav-links a {
+  text-decoration: none;
+  color: var(--dark);
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--primary);
+}
+
+.nav-links a.active-link {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* RIGHT SIDE */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* CART */
+.cartsed-container {
+  position: relative;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.cartsed-container:hover {
+  background: var(--light);
+}
+
+.cartsed-icon {
+  font-size: 22px;
+  color: var(--dark);
+}
+
+/* BADGE */
+.cartsed-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--primary);
+  color: white;
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 50%;
+}
+
+/* BUTTON */
+.signup {
+  background: var(--primary);
+  color: white;
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.signup:hover {
+  background: var(--secondary) !important;
+}
+
+/* USER BOX */
+.user-box {
+  background: var(--primary);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.user-box {
+  background: var(--secondary);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* MENU ICON */
+.menu-icon {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* VISIBILITY CONTROL */
+.mobile-only {
+  display: none;
+}
+
+.desktop-only {
+  display: flex;
+}
+
+/* ---------------- MOBILE ---------------- */
+@media (max-width: 768px) {
+
+  .navbar {
+    padding: 15px 20px;
+  }
+
+  /* SHOW MENU ICON */
+  .menu-icon {
+    display: block;
+  }
+
+  /* HIDE RIGHT SIDE (cart + user/signup) */
+  .nav-right {
+    display: none;
+  }
+
+  /* MOBILE MENU */
+  .nav-links {
+    position: absolute;
+    top: 65px;
+    left: 0;
+    width: 100%;
+    background: white;
+
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    padding: 25px 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    z-index: 999;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  /* FULL WIDTH LINKS */
+  .nav-links li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-links a {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+  }
+
+  /* SHOW INSIDE MENU */
+  .mobile-only {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* HIDE DESKTOP ITEMS */
+  .desktop-only {
+    display: none;
+  }
+
+  /* BUTTON */
+  .signup {
+    width: 80%;
+    text-align: center;
+  }
+
+  /* USER BOX */
+  .user-box {
+    width: 80%;
+    text-align: center;
+  }
+}
