@@ -5,6 +5,7 @@ import { CartContext } from "../context/CartContext";
 import { FaArrowLeft, FaEdit, FaTrash } from "react-icons/fa";
 import "./Checkout.css";
 import Footer from "../components/Footer";
+import BASE_URL from "../api"; // ✅ ADDED
 
 function Checkout() {
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ function Checkout() {
     } else {
       const newAddr = { id: Date.now(), ...form };
       setAddresses(prev => [...prev, newAddr]);
-      setSelectedAddress(newAddr.id); // auto select
+      setSelectedAddress(newAddr.id);
     }
 
     setShowAddressModal(false);
@@ -129,7 +130,6 @@ function Checkout() {
           <h2>Checkout</h2>
         </div>
 
-        {/* STEPS */}
         <div className="steps">
           <div className={step >= 1 ? "step active" : "step"} onClick={() => setStep(1)}>Location</div>
           <div className={step >= 2 ? "step active" : "step"} onClick={() => setStep(2)}>Payment</div>
@@ -226,7 +226,7 @@ function Checkout() {
               + Add Card
             </button>
 
-             <h4>More Payment Options</h4>
+            <h4>More Payment Options</h4>
 
             <div className="option">
               <input type="radio" checked={paymentMethod === "paypal"} onChange={() => setPaymentMethod("paypal")} />
@@ -249,7 +249,7 @@ function Checkout() {
           </div>
         )}
 
-        {/* ✅ STEP 3 FIXED */}
+        {/* STEP 3 */}
         {step === 3 && (
           <div className="section">
             <h3>Order Summary</h3>
@@ -263,7 +263,7 @@ function Checkout() {
                     src={
                       item.image?.startsWith("http")
                         ? item.image
-                        : `http://127.0.0.1:8000${item.image}`
+                        : `${BASE_URL}${item.image}`  // ✅ FIXED
                     }
                     alt={item.name}
                   />
@@ -323,7 +323,10 @@ function Checkout() {
               onChange={(e) => setForm({ ...form, text: e.target.value })}
             />
 
-            <button onClick={saveAddress}>Save</button>
+            <div className="modal-actions">
+              <button onClick={() => setShowAddressModal(false)}>Cancel</button>
+              <button onClick={saveAddress}>Save</button>
+            </div>
           </div>
         </div>
       )}
@@ -339,16 +342,20 @@ function Checkout() {
             <input placeholder="MM/YY" value={cardForm.expiry} onChange={(e) => setCardForm({ ...cardForm, expiry: e.target.value })} />
             <input placeholder="CVV" value={cardForm.cvv} onChange={(e) => setCardForm({ ...cardForm, cvv: e.target.value })} />
 
-            <button onClick={saveCard}>Save</button>
+            {/* ✅ SAME AS ADDRESS */}
+            <div className="modal-actions">
+              <button onClick={() => setShowCardModal(false)}>Cancel</button>
+              <button onClick={saveCard}>Save</button>
+            </div>
           </div>
         </div>
       )}
+
       {/* SUCCESS */}
       {paymentSuccess && (
         <div className="successed-overlay">
           <div className="successed-popup">
-              <div className="tick-circle">✔</div>
-
+            <div className="tick-circle">✔</div>
             <h2>Payment Successful!</h2>
             <button onClick={() => navigate("/")}>Back to Home</button>
           </div>

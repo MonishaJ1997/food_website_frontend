@@ -323,7 +323,9 @@ background:#201e1e;
 background: var(--primary);
 color:white;
 }
-
+.modal-actions button:last-child:hover{
+  background-color: var(--secondary);
+}
 /* ================= RESPONSIVE ================= */
 
 @media(max-width:768px){
