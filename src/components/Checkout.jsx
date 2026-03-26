@@ -16,11 +16,8 @@ function Checkout() {
   const [step, setStep] = useState(1);
 
   /* ADDRESS */
-  const [addresses, setAddresses] = useState([
-    { id: 1, type: "Home", text: "T Nagar, Chennai" },
-    { id: 2, type: "Office", text: "Guindy, Chennai" }
-  ]);
-  const [selectedAddress, setSelectedAddress] = useState(1);
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
 
   const [form, setForm] = useState({ type: "", text: "" });
   const [showAddressModal, setShowAddressModal] = useState(false);
@@ -29,9 +26,7 @@ function Checkout() {
   /* PAYMENT */
   const [paymentMethod, setPaymentMethod] = useState("cash");
 
-  const [cards, setCards] = useState([
-    { id: 1, number: "**** 6669", name: "Raj", expiry: "12/26" }
-  ]);
+  const [cards, setCards] = useState([]);
 
   const [cardForm, setCardForm] = useState({
     number: "",
@@ -45,7 +40,7 @@ function Checkout() {
 
   const [paymentSuccess, setPaymentSuccess] = useState(false);
 
-  /* ADDRESS */
+  /* ADDRESS SAVE */
   const saveAddress = () => {
     if (!form.type || !form.text) {
       return alert("Please fill all address fields!");
@@ -56,7 +51,9 @@ function Checkout() {
         prev.map(a => (a.id === editId ? { ...a, ...form } : a))
       );
     } else {
-      setAddresses(prev => [...prev, { id: Date.now(), ...form }]);
+      const newAddr = { id: Date.now(), ...form };
+      setAddresses(prev => [...prev, newAddr]);
+      setSelectedAddress(newAddr.id); // auto select
     }
 
     setShowAddressModal(false);
@@ -68,7 +65,7 @@ function Checkout() {
     setAddresses(prev => prev.filter(a => a.id !== id));
   };
 
-  /* CARD */
+  /* CARD SAVE */
   const saveCard = () => {
     const { number, name, expiry, cvv } = cardForm;
 
@@ -97,23 +94,13 @@ function Checkout() {
         )
       );
     } else {
-      if (!number || !cvv) {
-        return alert("Enter full card details");
-      }
-
-      if (!/^[0-9]{16}$/.test(number)) {
-        return alert("Invalid card number");
-      }
-
-      if (!/^[0-9]{3,4}$/.test(cvv)) {
-        return alert("Invalid CVV");
-      }
-
-      const last4 = number.slice(-4);
+      if (!number || !cvv) return alert("Enter full card details");
+      if (!/^[0-9]{16}$/.test(number)) return alert("Invalid card number");
+      if (!/^[0-9]{3,4}$/.test(cvv)) return alert("Invalid CVV");
 
       const newCard = {
         id: Date.now(),
-        number: `**** ${last4}`,
+        number: `**** ${number.slice(-4)}`,
         name,
         expiry
       };
@@ -142,6 +129,7 @@ function Checkout() {
           <h2>Checkout</h2>
         </div>
 
+        {/* STEPS */}
         <div className="steps">
           <div className={step >= 1 ? "step active" : "step"} onClick={() => setStep(1)}>Location</div>
           <div className={step >= 2 ? "step active" : "step"} onClick={() => setStep(2)}>Payment</div>
@@ -177,15 +165,18 @@ function Checkout() {
               </div>
             ))}
 
-            <button className="outline-btn" onClick={() => {
-              setShowAddressModal(true);
-              setEditId(null);
-              setForm({ type: "", text: "" });
-            }}>
+            <button className="outline-btn" onClick={() => setShowAddressModal(true)}>
               + Add Address
             </button>
 
-            <button onClick={() => setStep(2)} className="next-btn">
+            <button
+              className="next-btn"
+              onClick={() => {
+                if (!addresses.length) return alert("Add address first!");
+                if (!selectedAddress) return alert("Select address!");
+                setStep(2);
+              }}
+            >
               Continue
             </button>
           </div>
@@ -215,14 +206,8 @@ function Checkout() {
                 <div className="card-box">
                   <div className="card-top">{card.number}</div>
                   <div className="card-bottom">
-                    <div>
-                      <p className="label">Card Holder</p>
-                      <p className="value">{card.name}</p>
-                    </div>
-                    <div>
-                      <p className="label">Expiry</p>
-                      <p className="value">{card.expiry}</p>
-                    </div>
+                    <p>{card.name}</p>
+                    <p>{card.expiry}</p>
                   </div>
                 </div>
 
@@ -241,7 +226,7 @@ function Checkout() {
               + Add Card
             </button>
 
-            <h4>More Payment Options</h4>
+             <h4>More Payment Options</h4>
 
             <div className="option">
               <input type="radio" checked={paymentMethod === "paypal"} onChange={() => setPaymentMethod("paypal")} />
@@ -295,23 +280,23 @@ function Checkout() {
 
             <button
               className="pay-btn"
-              
-onClick={() => {
-  // ✅ get selected address
-  const selectedAddr = addresses.find(a => a.id === selectedAddress);
+              onClick={() => {
+                if (!selectedAddress) return alert("Select address!");
+                if (!paymentMethod) return alert("Select payment!");
 
-  const orderData = {
-    items: cartItems,
-    total,
-    date: new Date().toLocaleString(),
-    address: selectedAddr // ✅ ADD THIS LINE
-  };
+                const selectedAddr = addresses.find(a => a.id === selectedAddress);
 
-  localStorage.setItem("lastOrder", JSON.stringify(orderData));
+                const orderData = {
+                  items: cartItems,
+                  total,
+                  address: selectedAddr
+                };
 
-  setPaymentSuccess(true);
-  clearCart();
-}}
+                localStorage.setItem("lastOrder", JSON.stringify(orderData));
+
+                setPaymentSuccess(true);
+                clearCart();
+              }}
             >
               Pay Now
             </button>
@@ -324,13 +309,13 @@ onClick={() => {
       {showAddressModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h3>{editId ? "Edit Address" : "Add Address"}</h3>
+            <h3>Add Address</h3>
 
-            <input
-              placeholder="Type"
-              value={form.type}
-              onChange={(e) => setForm({ ...form, type: e.target.value })}
-            />
+            <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}>
+              <option value="">Select Type</option>
+              <option value="Home">Home</option>
+              <option value="Office">Office</option>
+            </select>
 
             <textarea
               placeholder="Address"
@@ -338,14 +323,26 @@ onClick={() => {
               onChange={(e) => setForm({ ...form, text: e.target.value })}
             />
 
-            <div className="modal-actions">
-              <button onClick={() => setShowAddressModal(false)}>Cancel</button>
-              <button onClick={saveAddress}>Save</button>
-            </div>
+            <button onClick={saveAddress}>Save</button>
           </div>
         </div>
       )}
 
+      {/* CARD MODAL */}
+      {showCardModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Add Card</h3>
+
+            <input placeholder="Card Number" value={cardForm.number} onChange={(e) => setCardForm({ ...cardForm, number: e.target.value })} />
+            <input placeholder="Name" value={cardForm.name} onChange={(e) => setCardForm({ ...cardForm, name: e.target.value })} />
+            <input placeholder="MM/YY" value={cardForm.expiry} onChange={(e) => setCardForm({ ...cardForm, expiry: e.target.value })} />
+            <input placeholder="CVV" value={cardForm.cvv} onChange={(e) => setCardForm({ ...cardForm, cvv: e.target.value })} />
+
+            <button onClick={saveCard}>Save</button>
+          </div>
+        </div>
+      )}
       {/* SUCCESS */}
       {paymentSuccess && (
         <div className="successed-overlay">
@@ -357,9 +354,9 @@ onClick={() => {
           </div>
         </div>
       )}
-      <Footer/>
+
+      <Footer />
     </>
-   
   );
 }
 

@@ -150,3 +150,19 @@
     font-size: 18px;
   }
 }
+/* black text */
+.normal-text {
+  color: black;
+}
+
+/* clickable action */
+.action-text {
+  color: var(--primary);  /* or any color you use */
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* optional hover */
+.action-text:hover {
+  text-decoration: underline;
+}

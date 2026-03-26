@@ -106,26 +106,36 @@ export default function Menu() {
 
           <h2>{selectedSub?.name || "Select Category"}</h2>
 
-          <div className="food-grid">
-            {selectedSub?.foods?.map(food => (
-              <div key={food.id} className="food-card">
+         <div className="food-grid">
+  {selectedSub?.foods?.map(food => (
+    <div
+      key={food.id}
+      className="food-card"
+      onClick={() => navigate(`/food/${food.id}`)}  // ✅ move here
+      style={{ cursor: "pointer" }} // optional UX improvement
+    >
 
-                <img src={food.image} alt={food.name} />
+      <img src={food.image} alt={food.name} />
 
-                <div className="food-info">
-                  <h4>{food.name}</h4>
-                  <p>₹ {food.price}</p>
+      <div className="food-info">
+        <h4>{food.name}</h4>
+        <p>₹ {food.price}</p>
 
-                  <button
-                    onClick={() => navigate(`/food/${food.id}`)}
-                  >
-                    View Details
-                  </button>
-                </div>
+        <button
+          onClick={(e) => {
+            e.stopPropagation(); // ✅ prevents double trigger
+            navigate(`/food/${food.id}`);
+          }}
+        >
+          View Details
+        </button>
+      </div>
 
-              </div>
-            ))}
-          </div>
+    </div>
+  ))}
+</div>
+        
+          
 
         </div>
 

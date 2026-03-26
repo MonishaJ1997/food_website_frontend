@@ -151,3 +151,11 @@
     height: 200px;
   }
 }
+.loading-text {
+  display: flex;
+  justify-content: center;  /* horizontal center */
+  align-items: center;      /* vertical center */
+  height: 80vh;             /* full viewport height minus navbar if any */
+  font-size: 1.5rem;
+  color: #333;
+}

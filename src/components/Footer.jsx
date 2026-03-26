@@ -12,7 +12,7 @@ function Footer() {
 
         {/* LOGO + ABOUT */}
         <div className="footer-col">
-          <h2 className="logo">🍽️ DailyDine</h2>
+          <h2 className="logo">DailyDine</h2>
           <p>
             Serving fresh, delicious, and hygienic food every day. 
             Quality meals delivered to your doorstep.
@@ -43,13 +43,23 @@ function Footer() {
 
         {/* SOCIAL */}
         <div className="footer-col">
-          <h3>Follow Us</h3>
-          <div className="social-icons">
-            <FaFacebookF />
-            <FaInstagram />
-            <FaTwitter />
-          </div>
-        </div>
+  <h3>Follow Us</h3>
+
+  <div className="social-icons">
+    <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+      <FaFacebookF />
+    </a>
+
+    <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+      <FaInstagram />
+    </a>
+
+    <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
+      <FaTwitter />
+    </a>
+  </div>
+</div>
+        
 
       </div>
 

@@ -12,7 +12,7 @@ const navigate = useNavigate();
       .then(data => setHero(data));
   }, []);
 
-  if (!hero) return <p>Loading...</p>;
+  if (!hero)  return <p className="loading-text">Loading...</p>;
 
   return (
     <div className="hero">
